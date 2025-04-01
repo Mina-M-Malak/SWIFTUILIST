@@ -10,25 +10,20 @@ import SwiftData
 
 struct ContentView: View {
     @StateObject var viewModel = ListViewModel()
+    @State var searchText = ""
     
     var body: some View {
-        NavigationSplitView {
-            List(viewModel.items) { (item) in
+        NavigationView {
+            List(searchText.trimmingCharacters(in: .whitespaces).isEmpty ? viewModel.pokemon.results : viewModel.pokemon.results.filter({$0.name.contains(searchText.lowercased())})) { (item) in
                 HStack {
-                    Image(systemName: item.imageName)
-                        .frame(width: 40, height: 40)
-                        .background(.blue)
-                        .cornerRadius(8.0)
+                    PokemonImage(imageLink: item.url)
+                        .padding(.trailing, 20)
                     
-                    Text(item.title)
-                        .font(.headline)
+                    Text(item.name)
                 }
-                .padding()
-                //                .onDelete(perform: deleteItems)
-                .navigationTitle("Item List")
             }
-        } detail: {
-            Text("Select an item")
+            .searchable(text: $searchText)
+            .navigationTitle("Poke List")
         }
     }
 }
