@@ -8,7 +8,6 @@
 import Foundation
 
 class GetPokeList: EndpointProtocol {
-    var baseURL: URL { URL(string: "https://pokeapi.co/api/v2")! }
     
     var path: String { "/pokemon" }
     
